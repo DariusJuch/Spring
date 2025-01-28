@@ -8,9 +8,9 @@ public class Main {
     while (true) {
       System.out.println("Yes or No?");
       String input = scan.nextLine();
-      if (Objects.equals(input, "Yes")) {
-        
-      } else if (Objects.equals(input, "No")) {
+      if (input.equalsIgnoreCase("yes")) {
+
+      } else if (input.equalsIgnoreCase("no")) {
         break;
       }
     }
