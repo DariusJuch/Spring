@@ -2,12 +2,14 @@ package com.example.ResourceManagement.controller;
 
 
 import com.example.ResourceManagement.model.Movie;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -25,6 +27,17 @@ public class MovieController {
       return ResponseEntity.notFound().build();
     }
     return ResponseEntity.ok(movies.get(index));
+  }
+
+  @GetMapping("/movies/search")
+  public ResponseEntity<List<Movie>> searchMovies(@RequestParam(value = "title") String title) {
+    List<Movie> filteredMovies = movies.stream()
+            .filter(movie -> movie.getTitle().toLowerCase().contains(title.toLowerCase()))
+            .collect((Collectors.toList()));
+    if (filteredMovies.isEmpty()) {
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    return new ResponseEntity<>(filteredMovies, HttpStatus.OK);
   }
 
 
