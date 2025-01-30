@@ -19,6 +19,7 @@ public class MovieController {
   @GetMapping("/movies")
   public ResponseEntity<List<Movie>> getMovies() {
     return ResponseEntity.ok(movies);
+
   }
 
   @GetMapping("/movies/{index}")
@@ -43,7 +44,7 @@ public class MovieController {
 
   @PostMapping("/movies")
   public ResponseEntity<Movie> saveMovie(@RequestBody Movie movie) {
-    if (movie.getTitle().isEmpty() || movie.getDirector().isEmpty() || movie.getId().isEmpty()) {
+    if (movie.getTitle().isEmpty() || movie.getDirector().isEmpty() || movie.getTitle() == null || movie.getDirector() == null) {
       return ResponseEntity.badRequest().build();
     }
     movies.add(movie);
@@ -53,6 +54,39 @@ public class MovieController {
                             .buildAndExpand(movies.size() - 1)
                             .toUri())
             .body(movie);
+  }
+
+  @PutMapping("/movies/{index}")
+  public ResponseEntity<Movie> updateMovie(@PathVariable int index, @RequestBody Movie movie) {
+    if (movie.getTitle().isEmpty() || movie.getDirector().isEmpty()) {
+      return ResponseEntity.badRequest().build();
+    }
+    if (index > movies.size() - 1) {
+      Movie movieDb = movies.get(index);
+
+      movieDb.setTitle(movie.getTitle());
+      movieDb.setDirector(movie.getDirector());
+
+      return ResponseEntity.ok(movieDb);
+    }
+    movies.add(movie);
+
+    return ResponseEntity.created(
+                    ServletUriComponentsBuilder.fromCurrentRequest()
+                            .path("/{index}")
+                            .buildAndExpand(movies.size())
+                            .toUri())
+            .body(movie);
+
+  }
+
+  @DeleteMapping("/movie/{index}")
+  public ResponseEntity<Void> deleteBook(@PathVariable int index) {
+    if (index > movies.size() - 1) {
+      return ResponseEntity.notFound().build();
+    }
+    movies.remove(index);
+    return ResponseEntity.noContent().build();
   }
 }
 
