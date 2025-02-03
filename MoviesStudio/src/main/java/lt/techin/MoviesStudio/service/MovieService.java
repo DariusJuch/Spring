@@ -37,4 +37,20 @@ public class MovieService {
   public void deleteMovieById(long id) {
     movieRepository.deleteById(id);
   }
+
+  public boolean existMovieByTitle(String title) {
+    return movieRepository.existsMoviesByTitle(title);
+  }
+
+  public boolean existMovieByDirector(String director) {
+    return movieRepository.existsMovieByDirector(director);
+  }
+
+  public Movie findMovieByTitle(String title) {
+    return movieRepository.findByTitle(title);
+  }
+
+  public Movie findMovieByDirector(String director) {
+    return movieRepository.findMovieByDirector(director);
+  }
 }

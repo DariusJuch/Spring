@@ -85,4 +85,28 @@ public class MovieController {
     movieService.deleteMovieById(id);
     return ResponseEntity.noContent().build();
   }
+
+//  @GetMapping("/books/search")
+//  public ResponseEntity<Movie> getBookByTitle(@RequestParam String title) {
+//
+//    for (Movie movie : movieService.findAllMovies()) {
+//      if (!movieService.existMovieByTitle(title)) {
+//        return ResponseEntity.notFound().build();
+//      }
+//    }
+//
+//    return ResponseEntity.ok(movieService.findMovieByTitle(title));
+//  }
+//
+//  @GetMapping("/books/search")
+//  public ResponseEntity<Movie> getBookByDirector(@RequestParam String director) {
+//
+//    for (Movie movie : movieService.findAllMovies()) {
+//      if (!movieService.existMovieByTitle(director)) {
+//        return ResponseEntity.notFound().build();
+//      }
+//    }
+//
+//    return ResponseEntity.ok(movieService.findMovieByTitle(director));
+//  }
 }
