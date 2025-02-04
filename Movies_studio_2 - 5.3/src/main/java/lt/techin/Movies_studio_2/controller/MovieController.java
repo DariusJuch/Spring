@@ -55,7 +55,7 @@ public class MovieController {
   }
 
   @PutMapping("/movies/{id}")
-  public ResponseEntity<?> updateMovie(@PathVariable long id, @RequestBody Movie movie) {
+  public ResponseEntity<?> updateMovie(@PathVariable long id, @Valid @RequestBody Movie movie) {
 //    if (movie.getTitle().isEmpty() || movie.getDirector().isEmpty()) {
 //      return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 //    }
