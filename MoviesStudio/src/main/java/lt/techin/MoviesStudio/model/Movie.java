@@ -2,6 +2,8 @@ package lt.techin.MoviesStudio.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "movies")
 public class Movie {
@@ -12,6 +14,10 @@ public class Movie {
 
   private String title;
   private String director;
+
+  @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "mocie_id")
+  private List<>
 
   public Movie() {
   }

@@ -3,7 +3,6 @@ package lt.techin.Movies_studio_2.model;
 
 import jakarta.persistence.*;
 
-import javax.management.loading.PrivateMLet;
 import java.util.List;
 
 @Entity
@@ -19,7 +18,15 @@ public class Movie {
 
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "movie_id")
-  private List<Screenings> screenings;
+  private List<Screening> screenings;
+
+  @ManyToMany
+  @JoinTable(
+          name = "movies_actors",
+          joinColumns = @JoinColumn(name = "movie_id"),
+          inverseJoinColumns = @JoinColumn(name = "actor_id")
+  )
+  private List<Actor> actors;
 
   public Movie() {
   }
@@ -49,12 +56,20 @@ public class Movie {
     return id;
   }
 
-  public List<Screenings> getScreenings() {
+  public List<Screening> getScreenings() {
     return screenings;
   }
 
-  public void setScreenings(List<Screenings> screenings) {
+  public void setScreenings(List<Screening> screenings) {
     this.screenings = screenings;
+  }
+
+  public List<Actor> getActors() {
+    return actors;
+  }
+
+  public void setActors(List<Actor> actors) {
+    this.actors = actors;
   }
 }
 

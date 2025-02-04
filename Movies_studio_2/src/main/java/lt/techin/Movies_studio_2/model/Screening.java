@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "screenings")
-public class Screenings {
+public class Screening {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,10 +16,10 @@ public class Screenings {
   private String theatersName;
   private LocalDateTime screeningsTime;
 
-  public Screenings() {
+  public Screening() {
   }
 
-  public Screenings(String name, LocalDateTime screeningsTime) {
+  public Screening(String name, LocalDateTime screeningsTime) {
     this.theatersName = name;
     this.screeningsTime = screeningsTime;
   }
