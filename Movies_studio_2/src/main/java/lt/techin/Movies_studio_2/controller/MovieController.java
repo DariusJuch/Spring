@@ -1,6 +1,7 @@
 package lt.techin.Movies_studio_2.controller;
 
 
+import jakarta.validation.Valid;
 import lt.techin.Movies_studio_2.model.Movie;
 import lt.techin.Movies_studio_2.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,10 +40,10 @@ public class MovieController {
   }
 
   @PostMapping("/movies")
-  public ResponseEntity<?> saveMovie(@RequestBody Movie movie) {
-    if (movie.getTitle().isEmpty() || movie.getDirector().isEmpty()) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Movie title and Director cannot be empty");
-    }
+  public ResponseEntity<?> saveMovie(@Valid @RequestBody Movie movie) {
+//    if (movie.getTitle().isEmpty() || movie.getDirector().isEmpty()) {
+//      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Movie title and Director cannot be empty");
+//    }
     Movie saveMovie = movieService.saveMovie(movie);
 
     return ResponseEntity.created(

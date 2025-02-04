@@ -2,6 +2,10 @@ package lt.techin.Movies_studio_2.model;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lt.techin.Movies_studio_2.validation.Director;
+import org.hibernate.annotations.BatchSize;
 
 import java.util.List;
 
@@ -13,7 +17,11 @@ public class Movie {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
+  @NotNull
+  @Size(min = 2, max = 100, message = "May not be less than 2 and not more than 100 characters")
   private String title;
+
+  @Director
   private String director;
 
   @OneToMany(cascade = CascadeType.ALL)
