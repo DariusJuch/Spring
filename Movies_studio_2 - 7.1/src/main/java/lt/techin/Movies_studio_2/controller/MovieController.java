@@ -44,10 +44,9 @@ public class MovieController {
 
   @PostMapping("/movies")
   public ResponseEntity<?> saveMovie(@Valid @RequestBody MovieDTO movieDTO) {
-    // blogas variantas!
-    //    if (movieService.existMovieByTitle(movieDTO.title())) {
-    //      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Movie already exists!");
-    //    }
+//    if (movieService.existMovieByTitle(movieDTO.title())) {
+//      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Movie already exists!");
+//    }
     boolean alreadyExists = movieService.getAllMovieByName(movieDTO.title())
             .stream().anyMatch(movie -> movie.getDirector().equalsIgnoreCase(movieDTO.director()));
     if (alreadyExists) {
