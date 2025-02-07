@@ -29,5 +29,17 @@ public class UserService {
     return userRepository.findAll();
   }
 
+  public Optional<User> findById(long id) {
+    return userRepository.findById(id);
+  }
+
+  public boolean existUserById(long id) {
+    return userRepository.existsById(id);
+  }
+
+  public void deleteUserById(long id) {
+    userRepository.deleteById(id);
+  }
+
 
 }

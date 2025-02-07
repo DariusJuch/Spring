@@ -4,10 +4,11 @@ package lt.techin.Movies_studio_2.model;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import lt.techin.Movies_studio_2.model.Role;
 
-import javax.management.relation.Role;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -29,9 +30,10 @@ public class User implements UserDetails {
   )
   private List<Role> roles;
 
-  public User(String username, String password) {
+  public User(String username, String password, List<Role> roles) {
     this.username = username;
     this.password = password;
+    this.roles = roles;
   }
 
   public User() {
