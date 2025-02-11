@@ -23,6 +23,7 @@ public class SecurityConfig {
             .httpBasic(Customizer.withDefaults())
             .authorizeHttpRequests(authorize -> authorize
                     .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/movies").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.PUT, "/api/users/{id}").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.GET, "/api/users/{id}").hasRole("ADMIN")

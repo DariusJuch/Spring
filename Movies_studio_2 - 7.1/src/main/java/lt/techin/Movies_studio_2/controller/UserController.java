@@ -3,6 +3,9 @@ package lt.techin.Movies_studio_2.controller;
 
 
 import jakarta.validation.Valid;
+import lt.techin.Movies_studio_2.dto.UserMapper;
+import lt.techin.Movies_studio_2.dto.UserRequestDTO;
+import lt.techin.Movies_studio_2.dto.UserResponseDTO;
 import lt.techin.Movies_studio_2.model.Role;
 import lt.techin.Movies_studio_2.model.User;
 import lt.techin.Movies_studio_2.service.UserService;
@@ -32,23 +35,23 @@ public class UserController {
   }
 
   @GetMapping("/users")
-  public ResponseEntity<List<User>> getUser() {
-    return ResponseEntity.ok(userService.findAllUsers());
+  public ResponseEntity<List<UserResponseDTO>> getUser() {
+    return ResponseEntity.ok(UserMapper.toUserResponseDTOList(userService.findAllUsers()));
   }
 
   @GetMapping("/users/{id}")
-  public ResponseEntity<?> getUser(@PathVariable long id) {
+  public ResponseEntity<UserResponseDTO> getUser(@PathVariable long id) {
     Optional<User> foundUser = userService.findById(id);
 
     if (foundUser.isEmpty()) {
       return ResponseEntity.notFound().build();
     }
-    return ResponseEntity.ok().body(foundUser.get());
+    return ResponseEntity.ok(UserMapper.toUserResponseDTO(foundUser.get()));
   }
 
   @PostMapping("/users")
-  public ResponseEntity<User> addUser(@RequestBody User user) {
-
+  public ResponseEntity<UserResponseDTO> addUser(@Valid @RequestBody UserRequestDTO userRequestDTO) {
+    User user = UserMapper.toUser(userRequestDTO);
     user.setPassword(passwordEncoder.encode(user.getPassword()));
 //    user.setRoles(new ArrayList<Role>(List.of(new Role("ROLE_USER"))));
     User savedUser = userService.saveUser(user);
@@ -59,29 +62,29 @@ public class UserController {
                             .path("/{id}")
                             .buildAndExpand(savedUser.getId())
                             .toUri())
-            .body(savedUser);
+            .body(UserMapper.toUserResponseDTO(savedUser));
   }
 
   @PutMapping("/users/{id}")
-  public ResponseEntity<?> updateUser(@PathVariable long id, @Valid @RequestBody User user) {
-    if (user.getUsername().isEmpty()) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username cannot be empty");
-    }
+  public ResponseEntity<UserResponseDTO> updateUser(@PathVariable long id, @Valid @RequestBody UserResponseDTO userResponseDTO) {
+
     if (userService.existUserById(id)) {
       User userDb = userService.findById(id).get();
 
-      userDb.setRoles(user.getRoles());
+      UserMapper.updateUserFromDTO(userDb, userResponseDTO);
 
-      return ResponseEntity.ok(userService.saveUser(userDb));
+      userService.saveUser(userDb);
+
+      return ResponseEntity.ok(userResponseDTO);
     }
-    User savedUser = userService.saveUser(user);
+    User savedUser = userService.saveUser(UserMapper.toUserResponse(userResponseDTO));
 
     return ResponseEntity.created(
                     ServletUriComponentsBuilder.fromCurrentRequest()
                             .replacePath("/api/users/{id}")
                             .buildAndExpand(savedUser.getId())
                             .toUri())
-            .body(user);
+            .body(userResponseDTO);
   }
 
   @DeleteMapping("/users/{id}")
