@@ -24,8 +24,11 @@ public class SecurityConfig {
             .authorizeHttpRequests(authorize -> authorize
                     .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/movies").hasRole("USER")
+                    .requestMatchers(HttpMethod.GET, "/api/movies").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.GET, "/api/movies/{id}").hasRole("USER")
+                    .requestMatchers(HttpMethod.GET, "/api/movies/{id}").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.GET, "/api/actors").hasRole("USER")
+                    .requestMatchers(HttpMethod.GET, "/api/actors").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.PUT, "/api/users/{id}").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.GET, "/api/users/{id}").hasRole("ADMIN")
@@ -34,6 +37,9 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.DELETE, "/api/movies").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.PUT, "/api/movies/{id}").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.POST, "/api/actors").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.PUT, "/api/users/{id}").hasRole("USER")
+                    .requestMatchers(HttpMethod.GET, "/api/users/{id}").hasRole("USER")
+                    .requestMatchers(HttpMethod.DELETE, "/api/users/{id}").hasRole("USER")
                     .anyRequest().authenticated()
             );
     return http.build();

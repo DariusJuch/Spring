@@ -9,14 +9,9 @@ import lt.techin.Movies_studio_2.dto.UserResponseDTO;
 import lt.techin.Movies_studio_2.model.Role;
 import lt.techin.Movies_studio_2.model.User;
 import lt.techin.Movies_studio_2.service.UserService;
-import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -45,16 +40,7 @@ public class UserController {
   }
 
   @GetMapping("/users/{id}")
-  public ResponseEntity<?> getUser(@PathVariable long id, @AuthenticationPrincipal UserDetails userDetails, Authentication authentication) {
-
-    boolean isAdmin = ((authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).anyMatch(a -> a.equalsIgnoreCase("ROLE_ADMIN"))));
-
-    if (!isAdmin) {
-      if (((User) authentication.getPrincipal()).getId() != id) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Can't see other user");
-      }
-    }
-
+  public ResponseEntity<UserResponseDTO> getUser(@PathVariable long id) {
     Optional<User> foundUser = userService.findById(id);
 
     if (foundUser.isEmpty()) {
@@ -65,9 +51,6 @@ public class UserController {
 
   @PostMapping("/users")
   public ResponseEntity<UserResponseDTO> addUser(@Valid @RequestBody UserRequestDTO userRequestDTO) {
-
-
-
     User user = UserMapper.toUser(userRequestDTO);
     user.setPassword(passwordEncoder.encode(user.getPassword()));
 //    user.setRoles(new ArrayList<Role>(List.of(new Role("ROLE_USER"))));
@@ -83,15 +66,7 @@ public class UserController {
   }
 
   @PutMapping("/users/{id}")
-  public ResponseEntity<?> updateUser(@PathVariable long id, @Valid @RequestBody UserResponseDTO userResponseDTO, Authentication authentication) {
-
-    boolean isAdmin = ((authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).anyMatch(a -> a.equalsIgnoreCase("ROLE_ADMIN"))));
-
-    if (!isAdmin) {
-      if (((User) authentication.getPrincipal()).getId() != id) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Can't see other user");
-      }
-    }
+  public ResponseEntity<UserResponseDTO> updateUser(@PathVariable long id, @Valid @RequestBody UserResponseDTO userResponseDTO) {
 
     if (userService.existUserById(id)) {
       User userDb = userService.findById(id).get();
@@ -113,16 +88,7 @@ public class UserController {
   }
 
   @DeleteMapping("/users/{id}")
-  public ResponseEntity<?> deleteUser(@PathVariable long id, Authentication authentication) {
-
-    boolean isAdmin = ((authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).anyMatch(a -> a.equalsIgnoreCase("ROLE_ADMIN"))));
-
-    if (!isAdmin) {
-      if (((User) authentication.getPrincipal()).getId() != id) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Can't see other user");
-      }
-    }
-
+  public ResponseEntity<Void> deleteUser(@PathVariable long id) {
     if (!userService.existUserById(id)) {
       return ResponseEntity.notFound().build();
     }
