@@ -12,5 +12,6 @@ public record ActorDTO(long id,
                        String nameActor,
                        @LastNameActor
                        @Size(min = 2, max = 50, message = "May not be less than 2 and not more than 50 characters")
-                       String lastNameActor) {
+                       String lastNameActor,
+                       long age) {
 }

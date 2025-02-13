@@ -8,6 +8,6 @@ public class DirectorValidator implements ConstraintValidator<Director, String> 
 
   @Override
   public boolean isValid(String director, ConstraintValidatorContext constraintValidatorContext) {
-    return director != null && director.matches("^[A-Z][a-z]+$");
+    return director != null && director.matches("^[A-Z][a-z]+(\\s[A-Z][a-z]+)*$");
   }
 }

@@ -11,10 +11,12 @@ public class Actor {
   private long id;
   private String nameActor;
   private String lastNameActor;
+  private long age;
 
   public Actor(String nameActor, String lastNameActor, long age) {
     this.nameActor = nameActor;
     this.lastNameActor = lastNameActor;
+    this.age = age;
   }
 
   public Actor() {
@@ -40,5 +42,12 @@ public class Actor {
     return id;
   }
 
+  public long getAge() {
+    return age;
+  }
+
+  public void setAge(long age) {
+    this.age = age;
+  }
 }
 
